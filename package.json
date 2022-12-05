@@ -19,7 +19,25 @@
         "command": "chatgpt-vscode-plugin.askGPT",
         "title": "Ask GPT"
       }
-    ]
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "chatgpt-vscode-plugin",
+          "title": "Ask ChatGPT",
+          "icon": "images/icon.png"
+        }
+      ]
+    },
+    "views": {
+      "chatgpt-vscode-plugin": [
+        {
+          "type": "webview",
+          "id": "chatgpt-vscode-plugin.chatView",
+          "name": "ChatGPT"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
