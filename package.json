@@ -15,19 +15,29 @@
     "Other"
   ],
   "activationEvents": [
+    "onCommand:chatgpt-vscode-plugin.setUpGPT",
     "onCommand:chatgpt-vscode-plugin.askGPT",
-    "onCommand:chatgpt-vscode-plugin.setUpGPT"
+    "onCommand:chatgpt-vscode-plugin.whyBroken",
+    "onCommand:chatgpt-vscode-plugin.explainPls"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
+        "command": "chatgpt-vscode-plugin.setUpGPT",
+        "title": "ChatGPT: Login"
+      },
+      {
         "command": "chatgpt-vscode-plugin.askGPT",
         "title": "ChatGPT: Ask GPT"
       },
       {
-        "command": "chatgpt-vscode-plugin.setUpGPT",
-        "title": "ChatGPT: Login"
+        "command": "chatgpt-vscode-plugin.whyBroken",
+        "title": "ChatGPT: Why is my code broken?"
+      },
+      {
+        "command": "chatgpt-vscode-plugin.explainPls",
+        "title": "ChatGPT: Explaine this code"
       }
     ],
     "viewsContainers": {

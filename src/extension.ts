@@ -4,16 +4,23 @@ import { ChatGPTAPI } from 'chatgpt';
 const sessionTokenName = 'sessionToken';
 
 const queryChatGPT = async (userInput: string, api: ChatGPTAPI) => {
-	const textDoc = await vscode.workspace.openTextDocument({ content: 'Please Wait... <3', language: "markdown" });
-	const textEditor = await vscode.window.showTextDocument(textDoc, { viewColumn: vscode.ViewColumn.Beside, preserveFocus: true, preview: true });
-
 	const languageId = vscode.window.activeTextEditor?.document.languageId;
 	const selectedCode = vscode.window.activeTextEditor?.document.getText(vscode.window.activeTextEditor?.selection);
 	const entireFileContents = vscode.window.activeTextEditor?.document.getText();
 
-	const query = selectedCode ? selectedCode + "\n" + userInput : `This is the ${languageId} file I'm working on \n` + entireFileContents + "\n" + userInput;
+	const query = selectedCode
+		? selectedCode + "\n" + userInput
+		: `This is the ${languageId} file I'm working on \n` + entireFileContents + "\n" + userInput;
 
 	const response = await api.sendMessage(query);
+
+	const textDoc = await vscode.workspace.openTextDocument({ content: 'Please Wait... <3', language: "markdown" });
+	const textEditor = await vscode.window.showTextDocument(textDoc, {
+		viewColumn: vscode.ViewColumn.Beside,
+		preserveFocus: true,
+		preview: true
+	});
+
 	textEditor.edit((editBuilder) => {
 		editBuilder.replace(
 			new vscode.Range(
@@ -37,7 +44,9 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand('chatgpt-vscode-plugin.setUpGPT', setUpGPT),
-		vscode.commands.registerCommand('chatgpt-vscode-plugin.askGPT', askGPT)
+		vscode.commands.registerCommand('chatgpt-vscode-plugin.askGPT', askGPT),
+		vscode.commands.registerCommand('chatgpt-vscode-plugin.whyBroken', askGPTWhyBroken),
+		vscode.commands.registerCommand('chatgpt-vscode-plugin.explainPls', askGPTToExplain),
 	);
 
 	async function setUpGPT() {
@@ -45,16 +54,23 @@ export async function activate(context: vscode.ExtensionContext) {
 		context.globalState.update(sessionTokenName, res);
 	}
 
-	async function askGPT() {
+	async function askGPTToExplain() { await askGPT('Can you explain what this code does?'); }
+	async function askGPTWhyBroken() { await askGPT('Why is this code broken?'); }
+
+	async function askGPT(queryOverride?: string) {
 		let stateSessionToken: string | undefined = context.globalState.get(sessionTokenName);
 		if (!stateSessionToken) {
 			return vscode.window.showErrorMessage('You need to set up your access token first, run ChatGPT: Login');
 		}
 
-		const query = await vscode.window.showInputBox({ prompt: 'Enter your query' });
-		if (!query) {
-			return;
+		if (!queryOverride) {
+			const query = await vscode.window.showInputBox({ prompt: 'Enter your query' });
+			if (!query) {
+				return;
+			}
+			queryChatGPT(query, chatApi);
+		} else {
+			queryChatGPT(queryOverride, chatApi);
 		}
-		queryChatGPT(query, chatApi);
 	}
 }
