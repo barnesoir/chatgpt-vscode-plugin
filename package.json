@@ -10,14 +10,14 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:chatgpt-vscode-plugin.helloWorld"
+    "onCommand:chatgpt-vscode-plugin.askGPT"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "chatgpt-vscode-plugin.helloWorld",
-        "title": "Hello World"
+        "command": "chatgpt-vscode-plugin.askGPT",
+        "title": "Ask GPT"
       }
     ]
   },
