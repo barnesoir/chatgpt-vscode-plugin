@@ -2,26 +2,37 @@ import * as vscode from 'vscode';
 import { ChatGPTAPI } from 'chatgpt';
 
 
-export function activate(context: vscode.ExtensionContext) {
-	const chatApi = new ChatGPTAPI({ sessionToken: 'eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..qc8TWwGSx0GJ0rRZ.F9fUcMpV3MMCVPHkR1Qte6R7WVQEgQKFNoujalB-t7FXZ5cDTsJFgwBi62yQohel6JehR_i-rsM7KBDUnDde2Nxt-MPEmIh1MQNkCJ6x43e5e702IYao6kM5_rjwNhJudNw3rUavV-KanocZg1V80ln-PnjEkZ8AMvm5XdBg4NnNO--u0pzTLhOxoEWWzKNzWG1oGqBbDe1EgAEaUa_lSaR4qoK4PD7-mfwYo6uJWVOtrUpjD82wqdBhCwq8z0ATuzYhc6mMOhs7P3b_XxbqQdTOsw1f4U1hdmDZ52PmWFAwt0rSkeFvpxJuBj5aXt_qOVAlkVA4B2K0kHO1RAIaJsYN5t0LysMWrnfyETqNv9uVryjMuT-yJKpqljAkLkswIh6BsJM8DGNOP6ytQhFbht9Paz0D5sQhduN48y5zZJ8w7QX7Vp7_M4VvP7xatzObIarnfR-72HBmv8yJufyiQi-qSwZpGDIAbTtCTbjTGCDHFHRgF0MBbkunnayQFtWoO2_cnvdaQOIg3RnCVKSl6niR62dhZUWa-3Qg5I0_3gHsroWo9zxFqDBqoKuQ3u5zguDnhuGpD5MRtNpLA2hZtZJD117cwIJW8STMl3S9yl2U-bWFJJR13LGQf6jdEUtV_v5a4X34BUujI784UBGiKCcjxjM61A9G8wrzXGL_5mom7IuC9Z1_zxVximjL3DD_AENkvkN4ZgXUk11rZvQlxn4YaXC0AEM17lib1Ig70sPR6TvHHbJuc0PVr8pAdtE2SUZrY2cWdcDw69CxWAC621CZNECndBiMZalwuiDV48HzfyN3VFrpMI0oUOdg42SsbECFXuUqRIpKEqb5j1hlzVj06vtCd5kw3NnUvNbPwIG0HrGQn3u-i2OiPLPi4YDQ_bgOOG8oFKYBaO9RuY0BQKLq7hDSuVSn3OmNSBtvHcjtFCpeFE422jgig0h6XEcahDlR01hFVPxzq2ww1Zc2-M0cIJhgI4BVTYdhznIJfMGIInRGziYBKV6iWeEJqcv-i276DVkuDymTINm6yCl-AHYTZhVSlXn5VDijZ1Z-PplWkZgb_2sXjiABbxBhyBVhP_6aRA5R5hGL8fbYcwXrDiLP4fTcsfmNAuL1G2ZVBrXHul3A3u0a039USiP2sHX-1j8BgdlW4M_WiPX9o0_wdTitGIjCjcMHsSeA_NX1TVjAJ0J6yKanHeUEl20n3k7LbhwTIIKtdWQmRj1gOLacLBHUym-IrIQhIzQobdC0YvO5v2u5unTZwx4LVXEnoydRoyOBTM3Pc70LMG1eA4hTA34kn0_d90cDeGS4Dfv40atXej7lvURYrvroOzrQYlcEXEXJtbAhFvcTLBVYqWI81sZkrdb_oy1d9xE9s9SdV9p1KGaOS3_uwQdz8nqGC5ZoqJwsAN1jWl-UKAK1VVKibQ1EbzXlXju5UvmCSrRRhBfwLsUwCXukEDeeiOtz4upn_jGTRVOs99g3LupzYg6BSz-pZwLIkaH8Zw9iycOq5U903gs4ahZuxboAKKBRx6bg1tlAjFd_BsIreNkQQfiZlfKI-XUX26GWGYhK4ACkB3UNl_Gn0BfEeORNADypBzkAIk18OLlvmeqvLWTQqyfK-kOebcREQJ0NK8WyHpDb0GOaxGilbF4rMF-SBj8uRl4YTdKLnkXbR_kivlQ48Qspls1n3Gm3PUnqJQrfXgnwnP9t7BZ3khZjZds5lHmubVXRcGbj_1k7oIkFlwmoS8okqlWYgMJXVUN_lZMQ9w3QRpznt4bwlCu-C4syqzLeTU9qlRxDT8RlKfSpkfrxLpXhOYsDZRx9fXDLmMCwqowBLiMtKRAT1so_C1SPowlwB9d9V9BbX3KjacB5OIqH197WQNwtNZfJ8SfMWB53pm5OVHYQGWHomimFAyAdsaO7KXxDdJuPmtr6FoPlrAw4OHSxwQhwDaUAXq8e-EYvv06vcwOeQJyGpZbI1eHD270VPxbBDAhuPKNWuByhnwXOeeyaY0irWrUfclu6kW7J2fYcsfpxFrv0icubEDSnHLk7UNVh6B-75kKyfBvxbg0Y9EPbn-voHGB6fFgf2mZ-zB8a8Y6srYLNVPkGmO3iC5LnPrY8BOjB4Q_RSDB3muO5kdnsexFfekL6kuY.DrZiGCBP6hQ-82fCUS0iSQ' });
+export async function activate(context: vscode.ExtensionContext) {
+
+	const sessionTokenName = 'sessionToken';
+	context.globalState.setKeysForSync([sessionTokenName]);
+	let chatApi: ChatGPTAPI;
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('chatgpt-vscode-plugin.askGPT', () => {
-			vscode.window.showInputBox({ prompt: 'What do you want to do?' }).then((value) => {
-				search(chatApi, value).then(res => {
-					vscode.window.createWebviewPanel(
-						ChatPanel.viewType,
-						'ChatGPT',
-						vscode.ViewColumn.One,
-						{
-							// Enable javascript in the webview
-							enableScripts: true,
-							// And restrict the webview to only loading content from our extension's `media` directory.
-							localResourceRoots: [vscode.Uri.joinPath(context.extensionUri, 'media')],
-						}
-					).webview.postMessage({ type: 'addResponse', value: res });
-				});
-			});
+		vscode.commands.registerCommand('chatgpt-vscode-plugin.setUpGPT', async () => {
+			let userSessionToken = await vscode.window.showInputBox({ prompt: 'Please enter your access token, this can be retrieved using the guide on the README' });
+			context.globalState.update(sessionTokenName, userSessionToken);
+		}),
+		vscode.commands.registerCommand('chatgpt-vscode-plugin.askGPT', async () => {
+			let stateSessionToken: string | undefined = context.globalState.get(sessionTokenName);
+			if (!stateSessionToken) {
+				return vscode.window.showErrorMessage('You need to set up your access token first, run ChatGPT: Login');
+			}
+
+			const query = await vscode.window.showInputBox({ prompt: 'What do you want to do?' });
+			chatApi = new ChatGPTAPI({ sessionToken: stateSessionToken });
+			const res = await search(chatApi, query);
+			vscode.window.createWebviewPanel(
+				ChatPanel.viewType,
+				'ChatGPT',
+				vscode.ViewColumn.One,
+				{
+					// Enable javascript in the webview
+					enableScripts: true,
+					// And restrict the webview to only loading content from our extension's `media` directory.
+					localResourceRoots: [vscode.Uri.joinPath(context.extensionUri, 'media')],
+				}
+			).webview.postMessage({ type: 'addResponse', value: res });
 		}));
 
 	const search = async (api: ChatGPTAPI, prompt: string | undefined) => {

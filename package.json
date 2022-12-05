@@ -6,7 +6,7 @@
   "publisher": "JayBarnes",
   "displayName": "ChatGPT VSCode Plugin",
   "description": "A ChatGPT integration build using ChatGPT & 4.5 beers",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.73.0"
   },
@@ -14,14 +14,19 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:chatgpt-vscode-plugin.askGPT"
+    "onCommand:chatgpt-vscode-plugin.askGPT",
+    "onCommand:chatgpt-vscode-plugin.setUpGPT"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "chatgpt-vscode-plugin.askGPT",
-        "title": "Ask GPT"
+        "title": "ChatGPT: Ask GPT"
+      },
+      {
+        "command": "chatgpt-vscode-plugin.setUpGPT",
+        "title": "ChatGPT: Login"
       }
     ],
     "viewsContainers": {
