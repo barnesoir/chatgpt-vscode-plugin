@@ -1,5 +1,6 @@
 {
   "name": "chatgpt-vscode-plugin",
+  "icon": "images/icon.png",
   "repository": {
     "url": "https://github.com/barnesoir/chatgpt-vscode-plugin"
   },
