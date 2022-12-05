@@ -67,6 +67,7 @@
     "webpack-cli": "^5.0.0"
   },
   "dependencies": {
+    "chatgpt": "^1.0.0",
     "html-to-md": "^0.8.3",
     "playwright": "^1.28.1"
   }
