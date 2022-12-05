@@ -14,19 +14,36 @@ export function activate(context: vscode.ExtensionContext) {
 		);
 
 		// Set the HTML content of the Webview
-		panel.webview.html = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src https:; script-src 'unsafe-inline'; style-src vscode-resource: 'unsafe-inline';">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>My Webview</title>
-        </head>
-        <body>
-            <h1>Hello from the Webview!</h1>
-        </body>
-        </html>
+		panel.webview.html = `<!DOCTYPE html>
+		<html>
+		<head>
+			<meta charset="UTF-8">
+			<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src https:; script-src 'unsafe-inline'; style-src vscode-resource: 'unsafe-inline';">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<title>My Webview</title>
+			<style>
+				body {
+					margin: 0;
+					padding: 0;
+				}
+		
+				input[type="search"] {
+					width: 100%;
+					height: 50px;
+					font-size: 16px;
+					padding: 0 16px;
+					color: #333;
+					background-color: #eee;
+					border: none;
+					outline: none;
+				}
+			</style>
+		</head>
+		<body>
+			<input type="search" placeholder="Enter your search query here...">
+		</body>
+		</html>
+		
     `;
 	});
 
