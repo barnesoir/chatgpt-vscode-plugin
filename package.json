@@ -6,7 +6,7 @@
   "publisher": "JayBarnes",
   "displayName": "ChatGPT VSCode Plugin",
   "description": "A ChatGPT integration build using ChatGPT & 4.5 beers",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "engines": {
     "vscode": "^1.73.0"
   },
