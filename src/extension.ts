@@ -3,7 +3,6 @@ import { ChatGPTAPI } from 'chatgpt';
 
 
 export async function activate(context: vscode.ExtensionContext) {
-
 	const sessionTokenName = 'sessionToken';
 	context.globalState.setKeysForSync([sessionTokenName]);
 	let chatApi: ChatGPTAPI;
@@ -22,7 +21,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			const query = await vscode.window.showInputBox({ prompt: 'What do you want to do?' });
 			chatApi = new ChatGPTAPI({ sessionToken: stateSessionToken });
 			const res = await search(chatApi, query);
-			vscode.window.createWebviewPanel(
+			const webViewPanel = vscode.window.createWebviewPanel(
 				ChatPanel.viewType,
 				'ChatGPT',
 				vscode.ViewColumn.One,
@@ -32,7 +31,12 @@ export async function activate(context: vscode.ExtensionContext) {
 					// And restrict the webview to only loading content from our extension's `media` directory.
 					localResourceRoots: [vscode.Uri.joinPath(context.extensionUri, 'media')],
 				}
-			).webview.postMessage({ type: 'addResponse', value: res });
+			);
+			if (!ChatPanel.currentPanel) {
+				ChatPanel.currentPanel = new ChatPanel(webViewPanel, context.extensionUri);
+			}
+
+			webViewPanel.webview.postMessage({ type: 'addResponse', value: res });
 		}));
 
 	const search = async (api: ChatGPTAPI, prompt: string | undefined) => {
@@ -65,7 +69,6 @@ ${prompt}`;
 		// Make sure we register a serializer in activation event
 		vscode.window.registerWebviewPanelSerializer(ChatPanel.viewType, {
 			async deserializeWebviewPanel(webviewPanel: vscode.WebviewPanel, state: any) {
-				console.log(`Got state: ${state}`);
 				// Reset the webview options so we use latest uri for `localResourceRoots`.
 				webviewPanel.webview.options = { enableScripts: true, localResourceRoots: [vscode.Uri.joinPath(context.extensionUri, 'media')] };
 			}
@@ -114,8 +117,7 @@ class ChatPanel {
 			<input class="h-10 w-full text-white bg-stone-700 p-4 text-lg font-mono" type="text" id="prompt-input" />
 			<div id="response" class="pt-4 text-lg">
 			</div>
-			<script src="${scriptUri}"></script	public dispose() {
-				ChatPanel.currentPanel = undefined;>
+			<script src="${scriptUri}"></script>
 		</body>
 		</html>`;
 	}
