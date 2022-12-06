@@ -18,7 +18,8 @@
     "onCommand:chatgpt-vscode-plugin.setUpGPT",
     "onCommand:chatgpt-vscode-plugin.askGPT",
     "onCommand:chatgpt-vscode-plugin.whyBroken",
-    "onCommand:chatgpt-vscode-plugin.explainPls"
+    "onCommand:chatgpt-vscode-plugin.explainPls",
+    "onCommand:chatgpt-vscode-plugin.refactor"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -29,7 +30,7 @@
       },
       {
         "command": "chatgpt-vscode-plugin.askGPT",
-        "title": "ChatGPT: Ask GPT"
+        "title": "ChatGPT: Ask ChatGPT"
       },
       {
         "command": "chatgpt-vscode-plugin.whyBroken",
@@ -37,7 +38,11 @@
       },
       {
         "command": "chatgpt-vscode-plugin.explainPls",
-        "title": "ChatGPT: Explaine this code"
+        "title": "ChatGPT: Explain this code"
+      },
+      {
+        "command": "chatgpt-vscode-plugin.refactor",
+        "title": "ChatGPT: Refactor this code"
       }
     ],
     "viewsContainers": {

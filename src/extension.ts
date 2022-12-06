@@ -4,7 +4,7 @@ import { ChatGPTAPI } from 'chatgpt';
 const sessionTokenName = 'sessionToken';
 
 const queryChatGPT = async (userInput: string, api: ChatGPTAPI) => {
-	await textToMarkdownPreview("please wait... <3");
+	await textToMarkdownPreview(spinner);
 	const languageId = vscode.window.activeTextEditor?.document.languageId;
 	const selectedCode = vscode.window.activeTextEditor?.document.getText(vscode.window.activeTextEditor?.selection);
 	const entireFileContents = vscode.window.activeTextEditor?.document.getText();
@@ -28,7 +28,6 @@ const textToMarkdownPreview = async (userInput: string) => {
 	await vscode.commands.executeCommand('markdown.showPreview', tempFile);
 };
 
-
 export async function activate(context: vscode.ExtensionContext) {
 	context.globalState.setKeysForSync([sessionTokenName]);
 
@@ -43,6 +42,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('chatgpt-vscode-plugin.askGPT', askGPT),
 		vscode.commands.registerCommand('chatgpt-vscode-plugin.whyBroken', askGPTWhyBroken),
 		vscode.commands.registerCommand('chatgpt-vscode-plugin.explainPls', askGPTToExplain),
+		vscode.commands.registerCommand('chatgpt-vscode-plugin.refactor', askGPTToRefactor),
 	);
 
 	async function setUpGPT() {
@@ -52,6 +52,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	async function askGPTToExplain() { await askGPT('Can you explain what this code does?'); }
 	async function askGPTWhyBroken() { await askGPT('Why is this code broken?'); }
+	async function askGPTToRefactor() { await askGPT('Can you refactor this code and explain what\'s changed?'); }
 
 	async function askGPT(queryOverride?: string) {
 		let stateSessionToken: string | undefined = context.globalState.get(sessionTokenName);
@@ -70,3 +71,10 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 	}
 }
+
+const spinner = ` <body>
+<h1 style="text-align: center; font-family: sans-serif;">Please wait while we fetch your request</h1>
+<div style="text-align: center;">
+  <img src="https://i.giphy.com/media/ule4vhcY1xEKQ/giphy.webp" alt="loading gif">
+</div>
+</body>`;
