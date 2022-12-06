@@ -43,6 +43,10 @@
       {
         "command": "chatgpt-vscode-plugin.refactor",
         "title": "ChatGPT: Refactor this code"
+      },
+      {
+        "command": "chatgpt-vscode-plugin.clearLogs",
+        "title": "ChatGPT: Clear ChatGPT Logs"
       }
     ],
     "viewsContainers": {
