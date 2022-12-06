@@ -4,6 +4,7 @@ import { ChatGPTAPI } from 'chatgpt';
 const sessionTokenName = 'sessionToken';
 
 const queryChatGPT = async (userInput: string, api: ChatGPTAPI) => {
+	await textToMarkdownPreview("please wait... <3");
 	const languageId = vscode.window.activeTextEditor?.document.languageId;
 	const selectedCode = vscode.window.activeTextEditor?.document.getText(vscode.window.activeTextEditor?.selection);
 	const entireFileContents = vscode.window.activeTextEditor?.document.getText();
@@ -13,23 +14,18 @@ const queryChatGPT = async (userInput: string, api: ChatGPTAPI) => {
 		: `This is the ${languageId} file I'm working on \n` + entireFileContents + "\n" + userInput;
 
 	const response = await api.sendMessage(query);
+	await textToMarkdownPreview(response);
+};
 
-	const textDoc = await vscode.workspace.openTextDocument({ content: 'Please Wait... <3', language: "markdown" });
-	const textEditor = await vscode.window.showTextDocument(textDoc, {
-		viewColumn: vscode.ViewColumn.Beside,
-		preserveFocus: true,
-		preview: true
-	});
+const textToMarkdownPreview = async (userInput: string) => {
+	// Create a new temporary file for the Markdown content
+	const tempFile = vscode.Uri.file('/tmp/ChatGP.md');
 
-	textEditor.edit((editBuilder) => {
-		editBuilder.replace(
-			new vscode.Range(
-				new vscode.Position(0, 0),
-				new vscode.Position(Number.MAX_VALUE, 0)
-			),
-			response
-		);
-	});
+	// Write the user's input to the temporary file
+	await vscode.workspace.fs.writeFile(tempFile, Buffer.from(userInput));
+
+	// Open the Markdown preview and show the temporary file
+	await vscode.commands.executeCommand('markdown.showPreview', tempFile);
 };
 
 
