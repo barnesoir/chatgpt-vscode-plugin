@@ -53,7 +53,7 @@ To install the extension, follow these steps:
 If you need help using this extension, please open an issue on the GitHub repository for this extension.
 
 ## Credits
-
-- [ChatGPT](https://www.openai.com/products/chatgpt/) - The large language model trained by OpenAI that was used to generate this README file
+- [ChatGPT](https://chat.openai.com/chat) - The large language model trained by OpenAI that was used to generate this README file
+- [chatgpt-api](https://github.com/transitive-bullshit/chatgpt-api/) - The NPM package used to query ChatGPT
 - [Yeoman](https://yeoman.io/) - The code generator used to scaffold the extension project
 - [VS Code Extension Generator](https://github.com/Microsoft/vscode-generator-code) - The Yeoman generator for creating VS Code extensions
