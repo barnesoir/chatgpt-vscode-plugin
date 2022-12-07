@@ -47,10 +47,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
     }
 
     public async sendApiRequest(prompt: string, code?: string) {
-        // Initialize session token and ChatGPT API if not done already
-        if (!this.sessionToken) {
-            await this.setUpSessionToken();
-        }
+        await this.setUpSessionToken();
         if (!this.chatGptApi) {
             try {
                 this.chatGptApi = new ChatGPTAPI({ sessionToken: this.sessionToken as string });
