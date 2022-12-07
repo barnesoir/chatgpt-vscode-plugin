@@ -43,5 +43,7 @@ If you need help using this extension, please open an issue on the GitHub reposi
 ## Credits
 - [ChatGPT](https://chat.openai.com/chat) - The large language model trained by OpenAI that was used to generate this README file
 - [chatgpt-api](https://github.com/transitive-bullshit/chatgpt-api/) - The NPM package used to query ChatGPT
+- [mpociot's extension](https://github.com/mpociot/chatgpt-vscode) - Inspiration for the project and the original webview panel
+- [Gencay's extension](https://github.com/gencay/vscode-chatgpt) - Ported version of Gencay's webview panel.
 - [Yeoman](https://yeoman.io/) - The code generator used to scaffold the extension project
 - [VS Code Extension Generator](https://github.com/Microsoft/vscode-generator-code) - The Yeoman generator for creating VS Code extensions
