@@ -6,8 +6,10 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
     private chatGptApi?: ChatGPTAPI;
     private sessionToken?: string;
     private message?: any;
+    private conversationId: string;
 
     constructor(private context: vscode.ExtensionContext) {
+        this.conversationId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     }
 
     public resolveWebviewView(
@@ -40,7 +42,9 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
         this.sessionToken = await this.context.globalState.get(sessionTokenName) as string;
 
         if (!this.sessionToken) {
-            const userSessionToken = await vscode.window.showInputBox({ prompt: "Please enter your token (__Secure-next-auth.session-token), this can be retrieved using the guide on the README " })
+            const userSessionToken = await vscode.window.showInputBox({
+                prompt: "Please enter your token (__Secure-next-auth.session-token), this can be retrieved using the guide on the README "
+            });
             this.sessionToken = userSessionToken!;
             this.context.globalState.update(sessionTokenName, this.sessionToken);
         }
@@ -70,7 +74,9 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
         this.sendMessage({ type: 'addQuestion', value: prompt, code });
         try {
             await this.chatGptApi?.ensureAuth();
-            const response = await this.chatGptApi?.sendMessage(question);
+            const response = await this.chatGptApi?.sendMessage(question, {
+                conversationId: this.conversationId,
+            });
             this.sendMessage({ type: 'addResponse', value: response });
         } catch (error: any) {
             await vscode.window.showErrorMessage("Error sending request to ChatGPT", error?.message);

@@ -23,7 +23,8 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	async function resetToken() {
 		await context.globalState.update('chatgpt-session-token', null);
-		await vscode.window.showInformationMessage("Token reset, you'll be prompted for it next to you next ask ChatGPT a question.");
+		await chatViewProvider.setUpSessionToken();
+		// await vscode.window.showInformationMessage("Token reset, you'll be prompted for it next to you next ask ChatGPT a question.");
 	}
 
 	async function askChatGPT(userInput?: string) {
