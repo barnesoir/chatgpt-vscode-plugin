@@ -109,7 +109,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 					<div id="in-progress" class="p-4 flex items-center hidden">
                         <div style="text-align: center;">
                             <div>Please wait while we handle your request ❤️</div>
-                            <img src="https://i.giphy.com/media/ule4vhcY1xEKQ/giphy.webp" alt="loading gif">
+                            <div class="loader"></div>
                             <div>Please note, ChatGPT facing scaling issues which will impact this extension</div>
                         </div>
 					</div>
