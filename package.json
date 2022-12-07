@@ -1,13 +1,14 @@
 {
   "name": "chatgpt-vscode-plugin",
   "icon": "images/icon.png",
+  "license": "MIT",
   "repository": {
     "url": "https://github.com/barnesoir/chatgpt-vscode-plugin"
   },
   "publisher": "JayBarnes",
   "displayName": "ChatGPT VSCode Plugin",
-  "description": "A ChatGPT integration build using ChatGPT & 4.5 beers",
-  "version": "1.0.1",
+  "description": "A ChatGPT integration build using ChatGPT & 9 beers",
+  "version": "1.1.0",
   "engines": {
     "vscode": "^1.73.0"
   },
@@ -15,45 +16,67 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:chatgpt-vscode-plugin.setUpGPT",
+    "onView:chatgpt-vscode-plugin.view",
     "onCommand:chatgpt-vscode-plugin.askGPT",
     "onCommand:chatgpt-vscode-plugin.whyBroken",
     "onCommand:chatgpt-vscode-plugin.explainPls",
-    "onCommand:chatgpt-vscode-plugin.refactor"
+    "onCommand:chatgpt-vscode-plugin.refactor",
+    "onCommand:chatgpt-vscode-plugin.addTests",
+    "onCommand:chatgpt-vscode-plugin.resetToken"
   ],
   "main": "./dist/extension.js",
   "contributes": {
+    "menus": {
+      "editor/context": [
+        {
+          "command": "chatgpt-vscode-plugin.whyBroken",
+          "group": "chat-gpt-menu-group@1"
+        },
+        {
+          "command": "chatgpt-vscode-plugin.explainPls",
+          "group": "chat-gpt-menu-group@2"
+        },
+        {
+          "command": "chatgpt-vscode-plugin.refactor",
+          "group": "chat-gpt-menu-group@3"
+        },
+        {
+          "command": "chatgpt-vscode-plugin.addTests",
+          "group": "chat-gpt-menu-group@4"
+        }
+      ]
+    },
     "commands": [
       {
-        "command": "chatgpt-vscode-plugin.setUpGPT",
-        "title": "ChatGPT: Login"
+        "command": "chatgpt-vscode-plugin.askGPT",
+        "title": "ChatGPT: Query"
       },
       {
-        "command": "chatgpt-vscode-plugin.askGPT",
-        "title": "ChatGPT: Ask ChatGPT"
+        "command": "chatgpt-vscode-plugin.addTests",
+        "title": "ChatGPT: Add tests"
       },
       {
         "command": "chatgpt-vscode-plugin.whyBroken",
-        "title": "ChatGPT: Why is my code broken?"
+        "title": "ChatGPT: Why is it broken?"
       },
       {
         "command": "chatgpt-vscode-plugin.explainPls",
-        "title": "ChatGPT: Explain this code"
+        "title": "ChatGPT: Explain code"
       },
       {
         "command": "chatgpt-vscode-plugin.refactor",
-        "title": "ChatGPT: Refactor this code"
+        "title": "ChatGPT: Refactor"
       },
       {
-        "command": "chatgpt-vscode-plugin.clearLogs",
-        "title": "ChatGPT: Clear ChatGPT Logs"
+        "command": "chatgpt-vscode-plugin.resetToken",
+        "title": "ChatGPT: Reset token"
       }
     ],
     "viewsContainers": {
       "activitybar": [
         {
           "id": "chatgpt-vscode-plugin",
-          "title": "Ask ChatGPT",
+          "title": "ChatGPT",
           "icon": "images/icon.png"
         }
       ]
@@ -62,7 +85,7 @@
       "chatgpt-vscode-plugin": [
         {
           "type": "webview",
-          "id": "chatgpt-vscode-plugin.chatView",
+          "id": "chatgpt-vscode-plugin.view",
           "name": "ChatGPT"
         }
       ]
