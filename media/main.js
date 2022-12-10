@@ -26,6 +26,7 @@
                     </div>`;
 
                 document.getElementById("in-progress")?.classList?.remove("hidden");
+                list.scrollTo(0, list.scrollHeight);
                 break;
             case "addResponse":
                 document.getElementById("in-progress")?.classList?.add("hidden");
@@ -39,6 +40,7 @@
                         <div>${marked.parse(message.value)}</div>
                     </div>`;
 
+                list.scrollTo(0, list.scrollHeight);
                 break;
             default:
                 break;
