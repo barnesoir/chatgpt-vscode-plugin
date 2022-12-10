@@ -47,7 +47,9 @@
         }
     });
 
-    document.getElementById("ask-button")?.addEventListener("click", function (e) {
+    let submitHandler = function (e) {
+        e.preventDefault();
+        e.stopPropagation();
         const input = document.getElementById("question-input");
         if (input.value?.length > 0) {
             vscode.postMessage({
@@ -56,6 +58,13 @@
             });
 
             input.value = "";
+        }
+    };
+    document.getElementById("ask-button")?.addEventListener("click", submitHandler);
+    document.getElementById("question-input")?.addEventListener("keydown", function (e) {
+        console.log(e.key);
+        if (e.key === "Enter" && !e.shiftKey) {
+            submitHandler(e);
         }
     });
 })();
