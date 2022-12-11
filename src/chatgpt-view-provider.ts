@@ -1,16 +1,14 @@
-import { ChatGPTAPI } from 'chatgpt';
+import { ChatGPTAPI, ChatGPTConversation } from 'chatgpt';
 import * as vscode from 'vscode';
 
 export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
     private webView?: vscode.WebviewView;
     private chatGptApi?: ChatGPTAPI;
+    private chatGptConversaion?: ChatGPTConversation;
     private sessionToken?: string;
     private message?: any;
-    private conversationId: string;
 
-    constructor(private context: vscode.ExtensionContext) {
-        this.conversationId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    }
+    constructor(private context: vscode.ExtensionContext) { }
 
     public resolveWebviewView(
         webviewView: vscode.WebviewView,
@@ -28,6 +26,9 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
         webviewView.webview.onDidReceiveMessage(data => {
             if (data.type === 'askChatGPT') {
                 this.sendApiRequest(data.value);
+            }
+            if (data.type === 'clearChat') {
+                this.chatGptConversaion = this.chatGptApi?.getConversation();
             }
         });
 
@@ -52,9 +53,11 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 
     public async sendApiRequest(prompt: string, code?: string) {
         await this.setUpSessionToken();
-        if (!this.chatGptApi) {
+
+        if (!this.chatGptApi || !this.chatGptConversaion) {
             try {
                 this.chatGptApi = new ChatGPTAPI({ sessionToken: this.sessionToken as string });
+                this.chatGptConversaion = this.chatGptApi?.getConversation();
             } catch (error: any) {
                 vscode.window.showErrorMessage("Failed to connect to ChatGPT", error?.message);
                 return;
@@ -74,9 +77,10 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
         this.sendMessage({ type: 'addQuestion', value: prompt, code });
         try {
             await this.chatGptApi?.ensureAuth();
-            const response = await this.chatGptApi?.sendMessage(question, {
-                conversationId: this.conversationId,
+            const response = await this.chatGptConversaion.sendMessage(question, {
+                timeoutMs: 2 * 60 * 1000
             });
+
             this.sendMessage({ type: 'addResponse', value: response });
         } catch (error: any) {
             await vscode.window.showErrorMessage("Error sending request to ChatGPT", error?.message);
@@ -126,9 +130,8 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 								placeholder="Ask a question..."
 							></textarea>
 						</div>
-						<button style="background: var(--vscode-button-background)" id="ask-button" class="p-2 ml-5">
-							Ask
-						</button>
+						<button style="background: var(--vscode-button-background)" id="ask-button" class="p-2 ml-5">Ask</button>
+						<button style="background: var(--vscode-button-background)" id="clear-button" class="p-2 ml-3">Clear</button>
 					</div>
 				</div>
 				<script src="${scriptUri}"></script>
