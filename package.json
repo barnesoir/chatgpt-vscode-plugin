@@ -22,7 +22,8 @@
     "onCommand:chatgpt-vscode-plugin.explainPls",
     "onCommand:chatgpt-vscode-plugin.refactor",
     "onCommand:chatgpt-vscode-plugin.addTests",
-    "onCommand:chatgpt-vscode-plugin.resetToken"
+    "onCommand:chatgpt-vscode-plugin.resetToken",
+    "onCommand:chatgpt-vscode-plugin.resetThread"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -70,6 +71,10 @@
       {
         "command": "chatgpt-vscode-plugin.resetToken",
         "title": "ChatGPT: Reset token"
+      },
+      {
+        "command": "chatgpt-vscode-plugin.resetThread",
+        "title": "ChatGPT: Reset thread"
       }
     ],
     "viewsContainers": {

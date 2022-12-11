@@ -11,6 +11,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('chatgpt-vscode-plugin.refactor', askGPTToRefactor),
 		vscode.commands.registerCommand('chatgpt-vscode-plugin.addTests', askGPTToAddTests),
 		vscode.commands.registerCommand('chatgpt-vscode-plugin.resetToken', resetToken),
+		vscode.commands.registerCommand('chatgpt-vscode-plugin.resetThread', resetThread),
 		vscode.window.registerWebviewViewProvider("chatgpt-vscode-plugin.view", chatViewProvider, {
 			webviewOptions: { retainContextWhenHidden: true }
 		})
@@ -26,6 +27,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		await chatViewProvider.setUpSessionToken();
 		// await vscode.window.showInformationMessage("Token reset, you'll be prompted for it next to you next ask ChatGPT a question.");
 	}
+
+	async function resetThread() { await chatViewProvider.resetThread(); }
 
 	async function askChatGPT(userInput?: string) {
 		if (!userInput) {

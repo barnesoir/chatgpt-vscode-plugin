@@ -51,6 +51,13 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
         }
     }
 
+    public async resetThread() {
+        // Reset the conversation object
+        this.conversation = undefined;
+        // Clear the chat history
+        this.sendMessage({ type: 'resetThread' });
+    }
+
     public async sendApiRequest(prompt: string, code?: string) {
         await this.setUpSessionToken();
         if (!this.chatGptApi) {

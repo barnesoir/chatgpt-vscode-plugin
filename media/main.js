@@ -42,6 +42,8 @@
 
                 list.scrollTo(0, list.scrollHeight);
                 break;
+            case "resetThread":
+                list.innerHTML = "";
             default:
                 break;
         }
