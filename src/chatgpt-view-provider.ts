@@ -1,9 +1,10 @@
-import { ChatGPTAPI } from 'chatgpt';
+import { ChatGPTAPI, ChatGPTConversation } from 'chatgpt';
 import * as vscode from 'vscode';
 
 export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
     private webView?: vscode.WebviewView;
     private chatGptApi?: ChatGPTAPI;
+    private conversation?: ChatGPTConversation;
     private sessionToken?: string;
     private message?: any;
     private conversationId: string;
@@ -60,6 +61,9 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
                 return;
             }
         }
+        if (!this.conversation) {
+            this.conversation = this.chatGptApi.getConversation();
+        }
 
         // Create question by adding prompt prefix to code, if provided
         const question = (code) ? `${prompt}: ${code}` : prompt;
@@ -74,9 +78,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
         this.sendMessage({ type: 'addQuestion', value: prompt, code });
         try {
             await this.chatGptApi?.ensureAuth();
-            const response = await this.chatGptApi?.sendMessage(question, {
-                conversationId: this.conversationId,
-            });
+            const response = await this.conversation?.sendMessage(question);
             this.sendMessage({ type: 'addResponse', value: response });
         } catch (error: any) {
             await vscode.window.showErrorMessage("Error sending request to ChatGPT", error?.message);
