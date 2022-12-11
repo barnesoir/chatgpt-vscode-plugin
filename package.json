@@ -119,6 +119,6 @@
     "webpack-cli": "^5.0.0"
   },
   "dependencies": {
-    "chatgpt": "^1.4.0"
+    "chatgpt": "^2.0.6"
   }
 }
