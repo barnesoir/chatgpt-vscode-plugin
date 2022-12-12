@@ -34,6 +34,8 @@ To get the tokens:
 ![image](https://user-images.githubusercontent.com/38425102/207054121-dc87c625-a2f8-4ad6-92b7-9a52684d525c.png)
    
 4. Copy the value for `__Secure-next-auth.session-token` & `cl_clearance` and enter it into the prompt from `ChatGPT: Reset token`
+5. Go to the `Network` tab and select any request.
+6. Copy the value for `user-agent` from the `Request Headers` and enter it into the prompt.
 
 *Once you're logged in, you can ask ChatGPT any question and supply source code from your current file/selection.*
 

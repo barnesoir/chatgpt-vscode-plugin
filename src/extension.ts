@@ -24,6 +24,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	async function resetToken() {
 		await context.globalState.update('chatgpt-session-token', null);
 		await context.globalState.update('chatgpt-clearance-token', null);
+		await context.globalState.update('chatgpt-user-agent', null);
 		await chatViewProvider.setUpTokens();
 		// await vscode.window.showInformationMessage("Token reset, you'll be prompted for it next to you next ask ChatGPT a question.");
 	}
