@@ -7,6 +7,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
     private chatGptConversaion?: ChatGPTConversation;
     private sessionToken?: string;
     private clearanceToken?: string;
+    private userAgent?: string;
     private message?: any;
 
     constructor(private context: vscode.ExtensionContext) { }
@@ -54,12 +55,23 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
         this.clearanceToken = await this.context.globalState.get('chatgpt-clearance-token') as string;
 
         if (!this.clearanceToken) {
-            const userSessionToken = await vscode.window.showInputBox({
+            const userClearanceToken = await vscode.window.showInputBox({
                 prompt: "Please enter your clearance token (cf_clearance), this can be retrieved using the guide on the README ",
                 ignoreFocusOut: true,
             });
-            this.sessionToken = userSessionToken!;
-            this.context.globalState.update('chatgpt-clearance-token', this.sessionToken);
+            this.clearanceToken = userClearanceToken!;
+            this.context.globalState.update('chatgpt-clearance-token', this.clearanceToken);
+        }
+
+        this.userAgent = await this.context.globalState.get('chatgpt-user-agent') as string;
+        if (!this.userAgent) {
+            const userUserAgent = await vscode.window.showInputBox({
+                prompt: "Please enter your user agent, this can be retrieved using the guide on the README ",
+                ignoreFocusOut: true,
+                value: this.userAgent
+            });
+            this.userAgent = userUserAgent!;
+            this.context.globalState.update('chatgpt-user-agent', this.userAgent);
         }
     }
 
