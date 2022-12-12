@@ -44,7 +44,8 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 
         if (!this.sessionToken) {
             const userSessionToken = await vscode.window.showInputBox({
-                prompt: "Please enter your session token (__Secure-next-auth.session-token), this can be retrieved using the guide on the README "
+                prompt: "Please enter your session token (__Secure-next-auth.session-token), this can be retrieved using the guide on the README ",
+                ignoreFocusOut: true,
             });
             this.sessionToken = userSessionToken!;
             this.context.globalState.update('chatgpt-session-token', this.sessionToken);
@@ -54,7 +55,8 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 
         if (!this.clearanceToken) {
             const userSessionToken = await vscode.window.showInputBox({
-                prompt: "Please enter your clearance token (cf_clearance), this can be retrieved using the guide on the README "
+                prompt: "Please enter your clearance token (cf_clearance), this can be retrieved using the guide on the README ",
+                ignoreFocusOut: true,
             });
             this.sessionToken = userSessionToken!;
             this.context.globalState.update('chatgpt-clearance-token', this.sessionToken);
