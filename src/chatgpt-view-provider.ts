@@ -6,6 +6,8 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
     private chatGptApi?: ChatGPTAPI;
     private chatGptConversaion?: ChatGPTConversation;
     private sessionToken?: string;
+    //private clearanceToken?: string;
+    //private userAgent?: string;
     private message?: any;
 
     constructor(private context: vscode.ExtensionContext) { }
