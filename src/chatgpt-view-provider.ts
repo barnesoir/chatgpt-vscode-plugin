@@ -6,6 +6,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
     private chatGptApi?: ChatGPTAPI;
     private chatGptConversaion?: ChatGPTConversation;
     private sessionToken?: string;
+    private clearanceToken?: string;
     private message?: any;
 
     constructor(private context: vscode.ExtensionContext) { }
@@ -38,25 +39,37 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
         }
     }
 
-    public async setUpSessionToken() {
-        const sessionTokenName = 'chatgpt-session-token';
-        this.sessionToken = await this.context.globalState.get(sessionTokenName) as string;
+    public async setUpTokens() {
+        this.sessionToken = await this.context.globalState.get('chatgpt-session-token') as string;
 
         if (!this.sessionToken) {
             const userSessionToken = await vscode.window.showInputBox({
-                prompt: "Please enter your token (__Secure-next-auth.session-token), this can be retrieved using the guide on the README "
+                prompt: "Please enter your session token (__Secure-next-auth.session-token), this can be retrieved using the guide on the README "
             });
             this.sessionToken = userSessionToken!;
-            this.context.globalState.update(sessionTokenName, this.sessionToken);
+            this.context.globalState.update('chatgpt-session-token', this.sessionToken);
+        }
+
+        this.clearanceToken = await this.context.globalState.get('chatgpt-clearance-token') as string;
+
+        if (!this.clearanceToken) {
+            const userSessionToken = await vscode.window.showInputBox({
+                prompt: "Please enter your clearance token (cf_clearance), this can be retrieved using the guide on the README "
+            });
+            this.sessionToken = userSessionToken!;
+            this.context.globalState.update('chatgpt-clearance-token', this.sessionToken);
         }
     }
 
     public async sendApiRequest(prompt: string, code?: string) {
-        await this.setUpSessionToken();
+        await this.setUpTokens();
 
         if (!this.chatGptApi || !this.chatGptConversaion) {
             try {
-                this.chatGptApi = new ChatGPTAPI({ sessionToken: this.sessionToken as string });
+                this.chatGptApi = new ChatGPTAPI({
+                    sessionToken: this.sessionToken as string,
+                    clearanceToken: this.clearanceToken as string
+                });
                 this.chatGptConversaion = this.chatGptApi?.getConversation();
             } catch (error: any) {
                 vscode.window.showErrorMessage("Failed to connect to ChatGPT", error?.message);
