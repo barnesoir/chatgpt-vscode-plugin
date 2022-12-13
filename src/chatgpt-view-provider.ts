@@ -82,7 +82,8 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
             try {
                 this.chatGptApi = new ChatGPTAPI({
                     sessionToken: this.sessionToken as string,
-                    clearanceToken: this.clearanceToken as string
+                    clearanceToken: this.clearanceToken as string,
+                    userAgent: this.userAgent as string
                 });
                 this.chatGptConversaion = this.chatGptApi?.getConversation();
             } catch (error: any) {
