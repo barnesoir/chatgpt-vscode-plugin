@@ -39,6 +39,8 @@ To get the tokens:
 
 *Once you're logged in, you can ask ChatGPT any question and supply source code from your current file/selection.*
 
+(Because of cloudflare, there are now several limitations, see [here](https://github.com/timkmecl/chatgpt-vscode#update-december-12-2022) for more)
+
 ## Support
 If you need help using this extension, please open an issue on the GitHub repository for this extension.
 
