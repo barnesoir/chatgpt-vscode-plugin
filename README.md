@@ -27,7 +27,7 @@ Open the VS Code Command Palette and Type `ChatGPT: Reset token`, this will prom
 
 To get the tokens:
 
-1. Go to https://chat.openai.com/chat and log in or sign up.
+1. Go to https://chat.openai.com/chat and log in or sign up (preferably in a browser other then Chrome, see below).
 2. Open dev tools.
 3. Open `Application` > `Cookies` (`Storage` > `Cookies` on FireFox)
    
@@ -39,7 +39,8 @@ To get the tokens:
 
 *Once you're logged in, you can ask ChatGPT any question and supply source code from your current file/selection.*
 
-(Because of cloudflare, there are now several limitations, see [here](https://github.com/timkmecl/chatgpt-vscode#update-december-12-2022) for more)
+- Because of cloudflare, there are now several limitations, see [here](https://github.com/timkmecl/chatgpt-vscode#update-december-12-2022) for more.
+- There are currently users who have issues even when following all of the above (see this [comment](https://github.com/timkmecl/chatgpt-vscode/issues/4#issuecomment-1350562961)). **If you're using Chrome to obtain the tokens, try using a different browser** (e.g. Brave), as it seems like using Chrome is often the cause of this.
 
 ## Support
 If you need help using this extension, please open an issue on the GitHub repository for this extension.
