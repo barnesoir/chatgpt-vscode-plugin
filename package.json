@@ -10,7 +10,7 @@
   "description": "A ChatGPT integration build using ChatGPT & 9 beers",
   "version": "1.1.10",
   "engines": {
-    "vscode": "^1.73.0"
+    "vscode": "^1.74.0"
   },
   "categories": [
     "Other"
@@ -93,6 +93,10 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
+    "vscode:package": "vsce package",
+    "vscode:install": "code --install-extension chatgpt-vscode-plugin-1.1.10.vsix",
+    "vscode:clean": "del chatgpt-vscode-plugin-1.1.10.vsix",
+    "setup": "npm install",
     "compile": "webpack",
     "watch": "webpack --watch",
     "package": "webpack --mode production --devtool hidden-source-map",
@@ -105,11 +109,13 @@
   "devDependencies": {
     "@types/glob": "^8.0.0",
     "@types/mocha": "^10.0.1",
-    "@types/node": "16.x",
-    "@types/vscode": "^1.73.0",
+    "@types/node": "18.x",
+    "@types/vscode": "^1.74.0",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
     "@vscode/test-electron": "^2.2.0",
+    "@vscode/vsce": "^2.15.0",
+    "del-cli":"^5.0.0",
     "eslint": "^8.28.0",
     "glob": "^8.0.3",
     "mocha": "^10.1.0",
