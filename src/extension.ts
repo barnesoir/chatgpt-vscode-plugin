@@ -25,7 +25,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		await context.globalState.update('chatgpt-session-token', null);
 		await context.globalState.update('chatgpt-clearance-token', null);
 		await context.globalState.update('chatgpt-user-agent', null);
-		await chatViewProvider.setUpTokens();
+		await chatViewProvider.ensureApiKey();
 		// await vscode.window.showInformationMessage("Token reset, you'll be prompted for it next to you next ask ChatGPT a question.");
 	}
 
@@ -44,7 +44,7 @@ export async function activate(context: vscode.ExtensionContext) {
 				? selectedCode
 				: `This is the ${editor.document.languageId} file I'm working on: \n\n${entireFileContents}`;
 
-			chatViewProvider.sendApiRequest(userInput, code);
+			chatViewProvider.sendOpenAiApiRequest(userInput, code);
 		}
 	}
 }

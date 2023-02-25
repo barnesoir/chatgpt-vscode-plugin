@@ -1,13 +1,10 @@
-import { ChatGPTAPI, ChatGPTConversation } from 'chatgpt';
+import { Configuration, OpenAIApi } from 'openai';
 import * as vscode from 'vscode';
 
 export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
     private webView?: vscode.WebviewView;
-    private chatGptApi?: ChatGPTAPI;
-    private chatGptConversaion?: ChatGPTConversation;
-    private sessionToken?: string;
-    private clearanceToken?: string;
-    private userAgent?: string;
+    private openAiApi?: OpenAIApi;
+    private apiKey?: string;
     private message?: any;
 
     constructor(private context: vscode.ExtensionContext) { }
@@ -27,65 +24,35 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 
         webviewView.webview.onDidReceiveMessage(data => {
             if (data.type === 'askChatGPT') {
-                this.sendApiRequest(data.value);
-            }
-            if (data.type === 'clearChat') {
-                this.chatGptConversaion = this.chatGptApi?.getConversation();
+                this.sendOpenAiApiRequest(data.value);
             }
         });
 
         if (this.message !== null) {
-            this.sendMessage(this.message);
+            this.sendMessageToWebView(this.message);
             this.message = null;
         }
     }
 
-    public async setUpTokens() {
-        this.sessionToken = await this.context.globalState.get('chatgpt-session-token') as string;
+    public async ensureApiKey() {
+        this.apiKey = await this.context.globalState.get('chatgpt-api-key') as string;
 
-        if (!this.sessionToken) {
-            const userSessionToken = await vscode.window.showInputBox({
-                prompt: "Please enter your session token (__Secure-next-auth.session-token), this can be retrieved using the guide on the README ",
+        if (!this.apiKey) {
+            const apiKeyInput = await vscode.window.showInputBox({
+                prompt: "Please enter your OpenAI API Key, can be located at https://openai.com/account/api-keys",
                 ignoreFocusOut: true,
             });
-            this.sessionToken = userSessionToken!;
-            this.context.globalState.update('chatgpt-session-token', this.sessionToken);
-        }
-
-        this.clearanceToken = await this.context.globalState.get('chatgpt-clearance-token') as string;
-
-        if (!this.clearanceToken) {
-            const userClearanceToken = await vscode.window.showInputBox({
-                prompt: "Please enter your clearance token (cf_clearance), this can be retrieved using the guide on the README ",
-                ignoreFocusOut: true,
-            });
-            this.clearanceToken = userClearanceToken!;
-            this.context.globalState.update('chatgpt-clearance-token', this.clearanceToken);
-        }
-
-        this.userAgent = await this.context.globalState.get('chatgpt-user-agent') as string;
-        if (!this.userAgent) {
-            const userUserAgent = await vscode.window.showInputBox({
-                prompt: "Please enter your user agent, this can be retrieved using the guide on the README ",
-                ignoreFocusOut: true,
-                value: this.userAgent
-            });
-            this.userAgent = userUserAgent!;
-            this.context.globalState.update('chatgpt-user-agent', this.userAgent);
+            this.apiKey = apiKeyInput!;
+            this.context.globalState.update('chatgpt-api-key', this.apiKey);
         }
     }
 
-    public async sendApiRequest(prompt: string, code?: string) {
-        await this.setUpTokens();
+    public async sendOpenAiApiRequest(prompt: string, code?: string) {
+        await this.ensureApiKey();
 
-        if (!this.chatGptApi || !this.chatGptConversaion) {
+        if (!this.openAiApi) {
             try {
-                this.chatGptApi = new ChatGPTAPI({
-                    sessionToken: this.sessionToken as string,
-                    clearanceToken: this.clearanceToken as string,
-                    userAgent: this.userAgent as string
-                });
-                this.chatGptConversaion = this.chatGptApi?.getConversation();
+                this.openAiApi = new OpenAIApi(new Configuration({ apiKey: this.apiKey }));
             } catch (error: any) {
                 vscode.window.showErrorMessage("Failed to connect to ChatGPT", error?.message);
                 return;
@@ -101,22 +68,46 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
             this.webView?.show?.(true);
         }
 
-        // Send question to ChatGPT and show response
-        this.sendMessage({ type: 'addQuestion', value: prompt, code });
-        try {
-            await this.chatGptApi?.ensureAuth();
-            const response = await this.chatGptConversaion.sendMessage(question, {
-                timeoutMs: 2 * 60 * 1000
-            });
+        let response: String = '';
 
-            this.sendMessage({ type: 'addResponse', value: response });
+        this.sendMessageToWebView({ type: 'addQuestion', value: prompt, code });
+        try {
+            let currentMessageNumber = this.message;
+            let completion;
+            try {
+                completion = await this.openAiApi.createCompletion({
+                    model: 'code-davinci-003',
+                    prompt: question,
+                    temperature: 0.5,
+                    max_tokens: 2048,
+                    stop: ['\n\n\n', '<|im_end|>'],
+                });
+            } catch (error: any) {
+                await vscode.window.showErrorMessage("Error sending request to ChatGPT", error);
+                return;
+            }
+
+            if (this.message !== currentMessageNumber) {
+                return;
+            }
+
+            response = completion?.data.choices[0].text || '';
+
+            const REGEX_CODEBLOCK = new RegExp('\`\`\`', 'g');
+            const matches = response.match(REGEX_CODEBLOCK);
+            const count = matches ? matches.length : 0;
+            if (count % 2 !== 0) {
+                response += '\n\`\`\`';
+            }
+
+            this.sendMessageToWebView({ type: 'addResponse', value: response });
         } catch (error: any) {
-            await vscode.window.showErrorMessage("Error sending request to ChatGPT", error?.message);
+            await vscode.window.showErrorMessage("Error sending request to ChatGPT", error);
             return;
         }
     }
 
-    public sendMessage(message: any) {
+    public sendMessageToWebView(message: any) {
         if (this.webView) {
             this.webView?.webview.postMessage(message);
         } else {
