@@ -94,8 +94,8 @@
   "scripts": {
     "vscode:prepublish": "npm run package",
     "vscode:package": "vsce package",
-    "vscode:install": "code --install-extension chatgpt-vscode-plugin-1.1.10.vsix",
-    "vscode:clean": "del chatgpt-vscode-plugin-1.1.10.vsix",
+    "vscode:install": "code --install-extension chatgpt-vscode-plugin-2.0.0.vsix",
+    "vscode:clean": "del chatgpt-vscode-plugin-2.0.0.vsix",
     "setup": "npm install",
     "compile": "webpack",
     "watch": "webpack --watch",
